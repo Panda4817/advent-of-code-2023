@@ -3,40 +3,26 @@ package dev.kmunton.days.day1;
 import static java.lang.Integer.parseInt;
 
 import dev.kmunton.days.Day;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
 
 public class Day1 implements Day {
 
     private final List<String> data = new ArrayList<>();
 
-    public Day1(String resource) {
-        processData(resource);
+    public Day1(List<String> input) {
+        processData(input);
     }
 
-    public void processData(String resource) {
-        try {
-            File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(resource)).getFile());
-            Scanner myReader = new Scanner(file);
-            while (myReader.hasNextLine()) {
-                String s = myReader.nextLine();
-                data.add(s);
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+    @Override
+    public void processData(List<String> input) {
+        this.data.addAll(input);
     }
 
-    public int part1() {
+    public long part1() {
         return data.stream()
             .map(s -> Arrays.stream(s.split(""))
                 .filter(this::isNumber).toList())
@@ -44,7 +30,7 @@ public class Day1 implements Day {
            .mapToInt(Integer::parseInt).sum();
     }
 
-    public int part2() {
+    public long part2() {
         var numberMap = Map.of(
             "one", "1",
             "two", "2",

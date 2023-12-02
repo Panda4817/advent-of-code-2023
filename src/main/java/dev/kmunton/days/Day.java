@@ -1,8 +1,10 @@
 package dev.kmunton.days;
 
+import java.util.List;
+
 public interface Day {
 
-    void processData(String filename);
-    int part1();
-    int part2();
+    void processData(List<String> data);
+    long part1();
+    long part2();
 }

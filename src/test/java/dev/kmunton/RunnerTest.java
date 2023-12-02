@@ -3,11 +3,15 @@ package dev.kmunton;
 import dev.kmunton.days.Day;
 import dev.kmunton.days.DayException;
 import dev.kmunton.days.day1.Day1;
+import java.io.FileNotFoundException;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,52 +25,33 @@ public class RunnerTest {
     }
 
 
-    @Test
-    void mapDayToClass_String_Day() {
-        Day obj = Runner.mapDayToClass("hello");
+    @ParameterizedTest
+    @ValueSource(strings = {"hello", "", "-1", "26"})
+    void mapDayToClass_incorrectInput_throwDayException(String input) {
+        Day obj = Runner.mapDayToClass(input);
 
         assertEquals(DayException.class, obj.getClass());
     }
 
     @Test
-    void mapDayToClass_Empty_Day() {
-        Day obj = Runner.mapDayToClass("");
-
-        assertEquals(DayException.class, obj.getClass());
-    }
-
-    @Test
-    void mapDayToClass_Lower_Than_0_Day() {
-        Day obj = Runner.mapDayToClass("-1");
-
-        assertEquals(DayException.class, obj.getClass());
-    }
-
-    @Test
-    void mapDayToClass_Too_High_Day() {
-        Day obj = Runner.mapDayToClass("26");
-
-        assertEquals(DayException.class, obj.getClass());
-    }
-
-    @Test
-    void mapDayToClass_Correct_Day() {
+    void mapDayToClass_correctInput_returnDay() {
         Day obj = Runner.mapDayToClass("1");
 
         assertEquals(Day1.class, obj.getClass());
     }
 
     @Test
-    void main_Empty_args() {
+    void main_emptyArgs_returnMsg() {
         String[] list = {};
         Runner.main(list);
 
         assertEquals("Provide day number", outputStreamCaptor.toString().trim());
     }
 
-    @Test
-    void main_incorrect_word_args() {
-        String[] list = {"hello"};
+    @ParameterizedTest
+    @ValueSource(strings = {"-1", "26", "hello"})
+    void main_incorrectDayNumber_printOutErrorMsg(String input) {
+        String[] list = {input};
         Runner.main(list);
 
         assertEquals("Part 1: \nIncorrect day entered, no result\n\nPart 2: \nIncorrect day entered, no result",
@@ -74,25 +59,7 @@ public class RunnerTest {
     }
 
     @Test
-    void main_incorrect_low_number_args() {
-        String[] list = {"-1"};
-        Runner.main(list);
-
-        assertEquals("Part 1: \nIncorrect day entered, no result\n\nPart 2: \nIncorrect day entered, no result",
-                outputStreamCaptor.toString().trim());
-    }
-
-    @Test
-    void main_incorrect_high_number_args() {
-        String[] list = {"26"};
-        Runner.main(list);
-
-        assertEquals("Part 1: \nIncorrect day entered, no result\n\nPart 2: \nIncorrect day entered, no result",
-                outputStreamCaptor.toString().trim());
-    }
-
-    @Test
-    void main_too_many_args() {
+    void main_tooManyArgs_returnErrorMsg() {
         String[] list = {"1", "2"};
         Runner.main(list);
 
@@ -100,11 +67,26 @@ public class RunnerTest {
     }
 
     @Test
-    void main_correct_args() {
-        String[] list = {"1"};
+    void main_correctDayButNoInput_returnErrorMsg() {
+        String[] list = {"2"};
         Runner.main(list);
 
         assertNotEquals("Part 1: \nIncorrect day entered, no result\n\nPart 2: \nIncorrect day entered, no result",
                 outputStreamCaptor.toString().trim());
+    }
+
+    @Test
+    void loadData_correctFilename_returnList() throws FileNotFoundException {
+        String resource = "1.txt";
+        var data = Runner.loadData(resource, getClass());
+
+        assertEquals(List.of("a", "b", "c", "d", "e"), data);
+    }
+
+    @Test
+    void loadData_incorrectFilename_throwException() {
+        String resource = "test.txt";
+
+        assertThrows(FileNotFoundException.class, () -> Runner.loadData(resource, getClass()));
     }
 }

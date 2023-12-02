@@ -3,14 +3,10 @@ package dev.kmunton.days.day2;
 import static java.lang.Integer.parseInt;
 
 import dev.kmunton.days.Day;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
 
 public class Day2 implements Day {
 
@@ -20,38 +16,29 @@ public class Day2 implements Day {
 
     Map<Integer, List<Map<String, Integer>>> data = new HashMap<>();
 
-    public Day2(String resource) {
-        processData(resource);
+    public Day2(List<String> input) {
+        processData(input);
     }
 
-    public void processData(String resource) {
-        try {
-            File file = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(resource)).getFile());
-            Scanner myReader = new Scanner(file);
-            while (myReader.hasNextLine()) {
-                String s = myReader.nextLine();
-                var gameSubsets = s.split(":");
-                var key = parseInt(gameSubsets[0].split(" ")[1]);
-                data.put(key,new ArrayList<>());
-                var subsets = gameSubsets[1].split(";");
-                for (var subset : subsets) {
-                    var subsetMap = new HashMap<String, Integer>();
-                    var subsetValues = subset.split(", ");
-                    for (var subsetValue : subsetValues) {
-                        var subsetValueSplit = subsetValue.trim().split(" ");
-                        subsetMap.put(subsetValueSplit[1], parseInt(subsetValueSplit[0]));
-                    }
-                    data.get(key).add(subsetMap);
+    public void processData(List<String> input) {
+        input.forEach(line -> {
+            var gameSubsets = line.split(":");
+            var key = parseInt(gameSubsets[0].split(" ")[1]);
+            data.put(key,new ArrayList<>());
+            var subsets = gameSubsets[1].split(";");
+            for (var subset : subsets) {
+                var subsetMap = new HashMap<String, Integer>();
+                var subsetValues = subset.split(", ");
+                for (var subsetValue : subsetValues) {
+                    var subsetValueSplit = subsetValue.trim().split(" ");
+                    subsetMap.put(subsetValueSplit[1], parseInt(subsetValueSplit[0]));
                 }
+                data.get(key).add(subsetMap);
             }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+        });
     }
 
-    public int part1() {
+    public long part1() {
         var red = 12;
         var green = 13;
         var blue = 14;
@@ -86,7 +73,7 @@ public class Day2 implements Day {
 
     }
 
-    public int part2() {
+    public long part2() {
         var sumOfPower = 0;
 
         for (var key : data.keySet()) {
