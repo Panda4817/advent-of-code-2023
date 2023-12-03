@@ -40,23 +40,25 @@ public class Day3 implements Day {
         List<List<Integer>> stars = findAllStars();
         Map<String, List<List<Integer>>> numbers = getNumbersWithNeighbours();
         var sumOfGearRatios = 0;
+        final var maxNumberOfGears = 2;
         for (var star : stars) {
             var starRow = star.get(0);
             var starCol = star.get(1);
             var adjacentNumbers = new ArrayList<Integer>();
-            numbers.forEach((key, numberNeighbours) -> {
-                for (var numberNeighbour : numberNeighbours) {
-                    if (Objects.equals(numberNeighbour.get(0), starRow) &&
-                        Objects.equals(numberNeighbour.get(1), starCol)) {
-                        adjacentNumbers.add(parseNumberFromKey(key));
-                    }
+            for (var entry : numbers.entrySet()) {
+                if (adjacentNumbers.size() > maxNumberOfGears) {
+                    break;
                 }
-            });
-            if (adjacentNumbers.size() == 2) {
+                if (entry.getValue().stream().anyMatch(numberNeighbour ->
+                    Objects.equals(numberNeighbour.get(0), starRow)
+                        && Objects.equals(numberNeighbour.get(1), starCol))) {
+                    adjacentNumbers.add(parseNumberFromKey(entry.getKey()));
+                }
+            }
+            if (adjacentNumbers.size() == maxNumberOfGears) {
                 sumOfGearRatios += (adjacentNumbers.get(0) * adjacentNumbers.get(1));
             }
         }
-
 
         return sumOfGearRatios;
     }
