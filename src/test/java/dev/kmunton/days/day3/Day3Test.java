@@ -9,6 +9,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class Day3Test {
     private static Day3 day;
     private static final List<String> INPUT = """
+      467..114..
+      ...*......
+      ..35..633.
+      ......#...
+      617*......
+      .....+.58.
+      ..592.....
+      ......755.
+      ...$.*.+10
+      .664.598..
         """.lines().toList();
 
     @BeforeAll
@@ -16,14 +26,13 @@ class Day3Test {
         day =  new Day3(INPUT);
     }
 
-
     @Test
     void part1() {
-        assertEquals(0, day.part1());
+        assertEquals(4371, day.part1());
     }
 
     @Test
     void part2() {
-        assertEquals( 0, day.part2());
+        assertEquals( 467835, day.part2());
     }
 }
