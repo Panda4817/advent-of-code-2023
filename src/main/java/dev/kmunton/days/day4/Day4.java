@@ -6,12 +6,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 public class Day4 implements Day {
 
     Map<Integer, List<Integer>> winningNumbers = new HashMap<>();
-    Map<Integer,List<Integer>> scratchCardNumbers = new HashMap<>();
+    Map<Integer, List<Integer>> scratchCardNumbers = new HashMap<>();
 
     public Day4(List<String> input) {
         processData(input);
@@ -38,19 +37,13 @@ public class Day4 implements Day {
 
     public long part1() {
         var sumOfPoints = 0;
-
+        var cardToWinnings = getCardToWinnings();
         for (var entry : scratchCardNumbers.entrySet()) {
-            var winningNum = winningNumbers.get(entry.getKey());
-            var points = 0;
-            for (int number : entry.getValue()) {
-                if (winningNum.contains(number)) {
-                    if (points == 0) {
-                        points += 1;
-                    } else {
-                        points *= 2;
-                    }
-                }
+            var countOfWinningNumbers = cardToWinnings.get(entry.getKey());
+            if (countOfWinningNumbers == 0) {
+                continue;
             }
+            var points = (int) Math.pow(2, (double) countOfWinningNumbers - 1);
             sumOfPoints += points;
         }
 
@@ -59,28 +52,35 @@ public class Day4 implements Day {
     }
 
     public long part2() {
-        PriorityQueue<Integer> cardQueue = new PriorityQueue<>();
-        scratchCardNumbers.forEach((key, value) -> cardQueue.add(key));
-        var cardCounts = new HashMap<Integer, Integer>();
-        scratchCardNumbers.forEach((key, value) -> cardCounts.put(key, 1));
-
-        while (!cardQueue.isEmpty()) {
-            var card = cardQueue.poll();
-            var winningNum = winningNumbers.get(card);
-            var scratchCardNum = scratchCardNumbers.get(card);
-            var cardsToCopy = new ArrayList<Integer>();
-            var nextCard = card + 1;
-            for (int number : scratchCardNum) {
-                if (winningNum.contains(number)) {
-                    cardsToCopy.add(nextCard);
-                    cardCounts.put(nextCard, cardCounts.get(nextCard) + 1);
-                    nextCard += 1;
+        var cardToWinnings = getCardToWinnings();
+        var cards = new ArrayList<>(scratchCardNumbers.keySet().stream().map(card -> 1).toList());
+        for (int i = 0; i < cards.size(); i++) {
+            var matchingNumbers = cardToWinnings.get(i + 1);
+            for (int j = i + 1; j <= i + matchingNumbers; j++) {
+                if (j >= cards.size()) {
+                    break;
                 }
+                cards.set(j, cards.get(j) + cards.get(i));
             }
-            cardQueue.addAll(cardsToCopy);
         }
 
-        return cardCounts.values().stream().mapToInt(Integer::intValue).sum();
+        return cards.stream().mapToInt(Integer::intValue).sum();
 
+    }
+
+
+    private Map<Integer, Integer> getCardToWinnings() {
+        var cardToWinnings = new HashMap<Integer, Integer>();
+        for (var entry : scratchCardNumbers.entrySet()) {
+            var winningNum = winningNumbers.get(entry.getKey());
+            var countOfWinningNumbers = 0;
+            for (int number : entry.getValue()) {
+                if (winningNum.contains(number)) {
+                    countOfWinningNumbers++;
+                }
+            }
+            cardToWinnings.put(entry.getKey(), countOfWinningNumbers);
+        }
+        return cardToWinnings;
     }
 }
