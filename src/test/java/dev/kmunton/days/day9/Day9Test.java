@@ -10,6 +10,9 @@ class Day9Test {
 
     private static Day9 day;
     private static final List<String> INPUT = """
+        0 3 6 9 12 15
+        1 3 6 10 15 21
+        10 13 16 21 30 45
         """.lines().toList();
     @BeforeAll
     static void beforeAll() {
@@ -18,12 +21,12 @@ class Day9Test {
 
     @Test
     void part1() {
-        assertEquals( 0, day.part1());
+        assertEquals( 114, day.part1());
 
     }
 
     @Test
     void part2() {
-        assertEquals( 0, day.part2());
+        assertEquals( 2, day.part2());
     }
 }
