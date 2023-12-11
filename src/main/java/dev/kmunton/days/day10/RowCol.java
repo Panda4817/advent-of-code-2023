@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class RowCol {
 
-    private final int row;
-    private final int col;
+    private int row;
+    private int col;
 
     public RowCol(int row, int col) {
         this.row = row;
@@ -19,6 +19,14 @@ public class RowCol {
 
     public int getCol() {
         return col;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
     }
 
     @Override
@@ -68,5 +76,9 @@ public class RowCol {
             case "DOWN_RIGHT" -> new RowCol(row + 1, col + 1);
             default -> throw new IllegalStateException("Unexpected value: " + direction);
         };
+    }
+
+    public long calculateManhattanDistance(RowCol other) {
+        return (long) Math.abs(this.row - other.getRow()) + Math.abs(this.col - other.getCol());
     }
 }
