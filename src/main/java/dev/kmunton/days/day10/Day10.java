@@ -1,14 +1,15 @@
 package dev.kmunton.days.day10;
 
 import dev.kmunton.days.Day;
+import dev.kmunton.utils.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Day10 implements Day {
 
-    List<List<Tile>> grid = new ArrayList<>();
-    RowCol start;
+    private final List<List<Tile>> grid = new ArrayList<>();
+    private Point start;
 
     public Day10(List<String> input) {
         processData(input);
@@ -19,9 +20,9 @@ public class Day10 implements Day {
             var row = input.get(r).split("");
             var rowList = new ArrayList<Tile>();
             for (var c = 0; c < row.length; c++) {
-                var tile = new Tile(row[c], new RowCol(r, c));
+                var tile = new Tile(row[c], new Point(r, c));
                 if (Objects.equals(tile.getType(), "S")) {
-                    start = new RowCol(r, c);
+                    start = new Point(r, c);
                 }
                 rowList.add(tile);
             }
@@ -73,11 +74,11 @@ public class Day10 implements Day {
         return enclosedTotal;
     }
 
-    private List<RowCol> getMainLoopRowCols() {
-        List<RowCol> queue = new ArrayList<>();
+    private List<Point> getMainLoopRowCols() {
+        List<Point> queue = new ArrayList<>();
         queue.add(start);
-        var visited = new ArrayList<RowCol>();
-        var mainLoopRowCols = new ArrayList<RowCol>();
+        var visited = new ArrayList<Point>();
+        var mainLoopRowCols = new ArrayList<Point>();
         while (!queue.isEmpty()) {
             var current = queue.remove(0);
             visited.add(current);
@@ -111,16 +112,16 @@ public class Day10 implements Day {
         return mainLoopRowCols;
     }
 
-    private void printGrid(List<RowCol> mainLoopRowCols, boolean onlyMainLoop, List<RowCol> enclosedRowCols) {
+    private void printGrid(List<Point> mainLoopPoints, boolean onlyMainLoop, List<Point> enclosedPoints) {
         for (var row : grid) {
             for (var tile : row) {
                 if (onlyMainLoop) {
-                    System.out.print(tile.isMainLoop(mainLoopRowCols) ? tile.getType() : ".");
+                    System.out.print(tile.isMainLoop(mainLoopPoints) ? tile.getType() : ".");
                     continue;
-                } else if (enclosedRowCols != null) {
-                    System.out.print(enclosedRowCols.contains(tile.getRowCol())
+                } else if (enclosedPoints != null) {
+                    System.out.print(enclosedPoints.contains(tile.getRowCol())
                         ? "X"
-                        : tile.isMainLoop(mainLoopRowCols) ? tile.getType() : ".");
+                        : tile.isMainLoop(mainLoopPoints) ? tile.getType() : ".");
                     continue;
                 }
                 System.out.print(tile.getType());

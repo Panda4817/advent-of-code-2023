@@ -10,9 +10,9 @@ import java.util.function.Predicate;
 
 public class Day8 implements Day {
 
-    List<Integer> instructions = new ArrayList<>();
+    private final List<Integer> instructions = new ArrayList<>();
 
-    Map<String, List<String>> nodes = new HashMap<>();
+    private final Map<String, List<String>> nodes = new HashMap<>();
 
     public Day8(List<String> input) {
         processData(input);

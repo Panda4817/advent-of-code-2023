@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class Day4 implements Day {
 
-    Map<Integer, List<Integer>> winningNumbers = new HashMap<>();
-    Map<Integer, List<Integer>> scratchCardNumbers = new HashMap<>();
+    private final Map<Integer, List<Integer>> winningNumbers = new HashMap<>();
+    private final Map<Integer, List<Integer>> scratchCardNumbers = new HashMap<>();
 
     public Day4(List<String> input) {
         processData(input);

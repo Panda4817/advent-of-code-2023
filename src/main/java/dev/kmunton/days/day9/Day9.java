@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Day9 implements Day {
 
-    List<List<Long>> sequences = new ArrayList<>();
+    private final List<List<Long>> sequences = new ArrayList<>();
 
     public Day9(List<String> input) {
         processData(input);
