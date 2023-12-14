@@ -2,6 +2,7 @@ package dev.kmunton.days.day10;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class RowCol {
 
@@ -80,5 +81,83 @@ public class RowCol {
 
     public long calculateManhattanDistance(RowCol other) {
         return (long) Math.abs(this.row - other.getRow()) + Math.abs(this.col - other.getCol());
+    }
+
+    public void move(String direction) {
+        switch (direction) {
+            case "UP" -> this.row--;
+            case "DOWN" -> this.row++;
+            case "LEFT" -> this.col--;
+            case "RIGHT" -> this.col++;
+            case "UP_LEFT" -> {
+                this.row--;
+                this.col--;
+            }
+            case "UP_RIGHT" -> {
+                this.row--;
+                this.col++;
+            }
+            case "DOWN_LEFT" -> {
+                this.row++;
+                this.col--;
+            }
+            case "DOWN_RIGHT" -> {
+                this.row++;
+                this.col++;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + direction);
+        }
+    }
+
+    @SafeVarargs
+    public final boolean canMoveUp(Set<RowCol>... blockers) {
+        if (this.getRow() == 0) {
+            return false;
+        }
+        for (var blocker : blockers) {
+            if (blocker.contains(new RowCol(this.getRow() - 1, this.getCol()))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @SafeVarargs
+    public final boolean canMoveDown(int maxRows, Set<RowCol>... blockers) {
+        if (this.getRow() == maxRows - 1) {
+            return false;
+        }
+        for (var blocker : blockers) {
+            if (blocker.contains(new RowCol(this.getRow() + 1, this.getCol()))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @SafeVarargs
+    public final boolean canMoveLeft(Set<RowCol>... blockers) {
+        if (this.getCol() == 0) {
+            return false;
+        }
+        for (var blocker : blockers) {
+            if (blocker.contains(new RowCol(this.getRow(), this.getCol() - 1))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @SafeVarargs
+    public final boolean canMoveRight(int maxCols, Set<RowCol>... blockers) {
+        if (this.getCol() == maxCols - 1) {
+            return false;
+        }
+        for (var blocker : blockers) {
+            if (blocker.contains(new RowCol(this.getRow(), this.getCol() + 1))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
