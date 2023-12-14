@@ -1,8 +1,9 @@
 package dev.kmunton;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import dev.kmunton.days.Day;
 import dev.kmunton.days.DayException;
@@ -46,7 +47,8 @@ public class RunnerTest {
         String[] list = {};
         Runner.main(list);
 
-        assertEquals("Provide day number", outputStreamCaptor.toString().trim());
+        assertTrue(outputStreamCaptor.toString().trim()
+            .contains("Provide day number"));
     }
 
     @ParameterizedTest
@@ -55,8 +57,8 @@ public class RunnerTest {
         String[] list = {input};
         Runner.main(list);
 
-        assertEquals("Part 1: \nIncorrect day entered, no result\n\nPart 2: \nIncorrect day entered, no result",
-                outputStreamCaptor.toString().trim());
+        assertTrue(outputStreamCaptor.toString().trim()
+            .contains("Part 1: \nIncorrect day entered, no result\n\nPart 2: \nIncorrect day entered, no result"));
     }
 
     @Test
@@ -64,16 +66,17 @@ public class RunnerTest {
         String[] list = {"1", "2"};
         Runner.main(list);
 
-        assertEquals("Too many days provided. Provide one day.", outputStreamCaptor.toString().trim());
+        assertTrue(outputStreamCaptor.toString().trim()
+            .contains("Too many days provided. Provide one day."));
     }
 
     @Test
-    void main_correctDayButNoInput_returnErrorMsg() {
+    void main_correctDayButNoInput_errorMsgNotReturned() {
         String[] list = {"2"};
         Runner.main(list);
 
-        assertNotEquals("Part 1: \nIncorrect day entered, no result\n\nPart 2: \nIncorrect day entered, no result",
-                outputStreamCaptor.toString().trim());
+        assertFalse(outputStreamCaptor.toString().trim()
+            .contains("Part 1: \nIncorrect day entered, no result\n\nPart 2: \nIncorrect day entered, no result"));
     }
 
     @Test

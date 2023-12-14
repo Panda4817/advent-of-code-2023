@@ -13,7 +13,7 @@
 - ```mvn clean install```
 
 ## Run
-- ```java -cp target/classes dev.kmunton.Runner <day_number>```
+- ```mvn exec:java -Dexec.arguments=<day_number>```
 - day_number corresponds to the particular day in December that you want to run puzzles for
 
 ## Test

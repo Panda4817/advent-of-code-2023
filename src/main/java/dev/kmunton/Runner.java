@@ -1,5 +1,6 @@
 package dev.kmunton;
 
+import com.github.lalyos.jfiglet.FigletFont;
 import dev.kmunton.days.Day;
 import dev.kmunton.days.DayException;
 import java.io.File;
@@ -25,6 +26,8 @@ public class Runner {
     }
 
     public static void main(String[] args) {
+        String asciiArt = FigletFont.convertOneLine("Advent Of Code - 2023");
+        System.out.println(asciiArt);
         if (args.length == 0){
             System.out.println("Provide day number");
             return;
