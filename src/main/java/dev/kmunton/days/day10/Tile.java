@@ -1,50 +1,51 @@
 package dev.kmunton.days.day10;
 
+import dev.kmunton.utils.Point;
 import java.util.List;
 
 public class Tile {
 
     private final String type;
-    private final RowCol rowCol;
-    private final List<RowCol> possibleNeighbours;
+    private final Point point;
+    private final List<Point> possibleNeighbours;
 
-    public Tile(String type, RowCol rowCol) {
+    public Tile(String type, Point point) {
         this.type = type;
-        this.rowCol = rowCol;
-        this.possibleNeighbours = setPossibleNeighbours(rowCol);
+        this.point = point;
+        this.possibleNeighbours = setPossibleNeighbours(point);
     }
 
-    private List<RowCol> setPossibleNeighbours(RowCol rowCol) {
+    private List<Point> setPossibleNeighbours(Point point) {
         return switch (type) {
             case "S" -> List.of(
-                new RowCol(rowCol.getRow() - 1, rowCol.getCol()),
-                new RowCol(rowCol.getRow() + 1, rowCol.getCol()),
-                new RowCol(rowCol.getRow(), rowCol.getCol() - 1),
-                new RowCol(rowCol.getRow(), rowCol.getCol() + 1)
+                new Point(point.getRow() - 1, point.getCol()),
+                new Point(point.getRow() + 1, point.getCol()),
+                new Point(point.getRow(), point.getCol() - 1),
+                new Point(point.getRow(), point.getCol() + 1)
             );
             case "|" -> List.of(
-                new RowCol(rowCol.getRow() - 1, rowCol.getCol()),
-                new RowCol(rowCol.getRow() + 1, rowCol.getCol())
+                new Point(point.getRow() - 1, point.getCol()),
+                new Point(point.getRow() + 1, point.getCol())
             );
             case "-" -> List.of(
-                new RowCol(rowCol.getRow(), rowCol.getCol() - 1),
-                new RowCol(rowCol.getRow(), rowCol.getCol() + 1)
+                new Point(point.getRow(), point.getCol() - 1),
+                new Point(point.getRow(), point.getCol() + 1)
             );
             case "F" -> List.of(
-                new RowCol(rowCol.getRow() + 1, rowCol.getCol()),
-                new RowCol(rowCol.getRow(), rowCol.getCol() + 1)
+                new Point(point.getRow() + 1, point.getCol()),
+                new Point(point.getRow(), point.getCol() + 1)
             );
             case "L" -> List.of(
-                new RowCol(rowCol.getRow() - 1, rowCol.getCol()),
-                new RowCol(rowCol.getRow(), rowCol.getCol() + 1)
+                new Point(point.getRow() - 1, point.getCol()),
+                new Point(point.getRow(), point.getCol() + 1)
             );
             case "J" -> List.of(
-                new RowCol(rowCol.getRow() - 1, rowCol.getCol()),
-                new RowCol(rowCol.getRow(), rowCol.getCol() - 1)
+                new Point(point.getRow() - 1, point.getCol()),
+                new Point(point.getRow(), point.getCol() - 1)
             );
             case "7" -> List.of(
-                new RowCol(rowCol.getRow() + 1, rowCol.getCol()),
-                new RowCol(rowCol.getRow(), rowCol.getCol() - 1)
+                new Point(point.getRow() + 1, point.getCol()),
+                new Point(point.getRow(), point.getCol() - 1)
             );
             default -> List.of();
         };
@@ -54,24 +55,24 @@ public class Tile {
         return type;
     }
 
-    public List<RowCol> getPossibleNeighbours() {
+    public List<Point> getPossibleNeighbours() {
         return possibleNeighbours;
     }
 
-    public boolean isMainLoop(List<RowCol> mainLoopRowCols) {
-        return mainLoopRowCols.contains(rowCol);
+    public boolean isMainLoop(List<Point> mainLoopPoints) {
+        return mainLoopPoints.contains(point);
     }
 
     @Override
     public String toString() {
         return "Tile{" +
             "type=" + type +
-            ", rowCol=" + rowCol +
+            ", point=" + point +
             ", possibleNeighbours=" + possibleNeighbours +
             '}';
     }
 
-    public RowCol getRowCol() {
-        return rowCol;
+    public Point getRowCol() {
+        return point;
     }
 }

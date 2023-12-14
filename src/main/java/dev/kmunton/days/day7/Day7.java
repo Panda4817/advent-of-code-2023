@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Day7 implements Day {
 
-    List<Hand> handsNormal = new ArrayList<>();
-    List<Hand> handsJoker = new ArrayList<>();
+    private final List<Hand> handsNormal = new ArrayList<>();
+    private final List<Hand> handsJoker = new ArrayList<>();
 
     public Day7(List<String> input) {
         processData(input);

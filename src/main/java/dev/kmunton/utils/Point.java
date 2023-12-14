@@ -1,15 +1,15 @@
-package dev.kmunton.days.day10;
+package dev.kmunton.utils;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class RowCol {
+public class Point {
 
     private int row;
     private int col;
 
-    public RowCol(int row, int col) {
+    public Point(int row, int col) {
         this.row = row;
         this.col = col;
     }
@@ -38,8 +38,8 @@ public class RowCol {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        RowCol rowCol = (RowCol) o;
-        return row == rowCol.row && col == rowCol.col;
+        Point point = (Point) o;
+        return row == point.row && col == point.col;
     }
 
     @Override
@@ -52,34 +52,34 @@ public class RowCol {
         return "[" + row + ", " + col + "]";
     }
 
-    public List<RowCol> getAdjacentRowCols() {
+    public List<Point> getAdjacentPoints() {
         return List.of(
-            new RowCol(row - 1, col),
-            new RowCol(row + 1, col),
-            new RowCol(row, col - 1),
-            new RowCol(row, col + 1),
-            new RowCol(row - 1, col - 1),
-            new RowCol(row - 1, col + 1),
-            new RowCol(row + 1, col - 1),
-            new RowCol(row + 1, col + 1)
+            new Point(row - 1, col),
+            new Point(row + 1, col),
+            new Point(row, col - 1),
+            new Point(row, col + 1),
+            new Point(row - 1, col - 1),
+            new Point(row - 1, col + 1),
+            new Point(row + 1, col - 1),
+            new Point(row + 1, col + 1)
         );
     }
 
-    public RowCol getAdjacentRowCol(String direction) {
+    public Point getAdjacentPoint(String direction) {
         return switch (direction) {
-            case "UP" -> new RowCol(row - 1, col);
-            case "DOWN" -> new RowCol(row + 1, col);
-            case "LEFT" -> new RowCol(row, col - 1);
-            case "RIGHT" -> new RowCol(row, col + 1);
-            case "UP_LEFT" -> new RowCol(row - 1, col - 1);
-            case "UP_RIGHT" -> new RowCol(row - 1, col + 1);
-            case "DOWN_LEFT" -> new RowCol(row + 1, col - 1);
-            case "DOWN_RIGHT" -> new RowCol(row + 1, col + 1);
+            case "UP" -> new Point(row - 1, col);
+            case "DOWN" -> new Point(row + 1, col);
+            case "LEFT" -> new Point(row, col - 1);
+            case "RIGHT" -> new Point(row, col + 1);
+            case "UP_LEFT" -> new Point(row - 1, col - 1);
+            case "UP_RIGHT" -> new Point(row - 1, col + 1);
+            case "DOWN_LEFT" -> new Point(row + 1, col - 1);
+            case "DOWN_RIGHT" -> new Point(row + 1, col + 1);
             default -> throw new IllegalStateException("Unexpected value: " + direction);
         };
     }
 
-    public long calculateManhattanDistance(RowCol other) {
+    public long calculateManhattanDistance(Point other) {
         return (long) Math.abs(this.row - other.getRow()) + Math.abs(this.col - other.getCol());
     }
 
@@ -110,12 +110,12 @@ public class RowCol {
     }
 
     @SafeVarargs
-    public final boolean canMoveUp(Set<RowCol>... blockers) {
+    public final boolean canMoveUp(Set<Point>... blockers) {
         if (this.getRow() == 0) {
             return false;
         }
         for (var blocker : blockers) {
-            if (blocker.contains(new RowCol(this.getRow() - 1, this.getCol()))) {
+            if (blocker.contains(new Point(this.getRow() - 1, this.getCol()))) {
                 return false;
             }
         }
@@ -123,12 +123,12 @@ public class RowCol {
     }
 
     @SafeVarargs
-    public final boolean canMoveDown(int maxRows, Set<RowCol>... blockers) {
+    public final boolean canMoveDown(int maxRows, Set<Point>... blockers) {
         if (this.getRow() == maxRows - 1) {
             return false;
         }
         for (var blocker : blockers) {
-            if (blocker.contains(new RowCol(this.getRow() + 1, this.getCol()))) {
+            if (blocker.contains(new Point(this.getRow() + 1, this.getCol()))) {
                 return false;
             }
         }
@@ -136,12 +136,12 @@ public class RowCol {
     }
 
     @SafeVarargs
-    public final boolean canMoveLeft(Set<RowCol>... blockers) {
+    public final boolean canMoveLeft(Set<Point>... blockers) {
         if (this.getCol() == 0) {
             return false;
         }
         for (var blocker : blockers) {
-            if (blocker.contains(new RowCol(this.getRow(), this.getCol() - 1))) {
+            if (blocker.contains(new Point(this.getRow(), this.getCol() - 1))) {
                 return false;
             }
         }
@@ -149,12 +149,12 @@ public class RowCol {
     }
 
     @SafeVarargs
-    public final boolean canMoveRight(int maxCols, Set<RowCol>... blockers) {
+    public final boolean canMoveRight(int maxCols, Set<Point>... blockers) {
         if (this.getCol() == maxCols - 1) {
             return false;
         }
         for (var blocker : blockers) {
-            if (blocker.contains(new RowCol(this.getRow(), this.getCol() + 1))) {
+            if (blocker.contains(new Point(this.getRow(), this.getCol() + 1))) {
                 return false;
             }
         }

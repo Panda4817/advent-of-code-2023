@@ -1,16 +1,16 @@
 package dev.kmunton.days.day11;
 
 import dev.kmunton.days.Day;
-import dev.kmunton.days.day10.RowCol;
+import dev.kmunton.utils.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Day11 implements Day {
 
-    List<RowCol> galaxies = new ArrayList<>();
-    List<RowCol> space = new ArrayList<>();
-    List<Integer> emptyRows = new ArrayList<>();
-    List<Integer> emptyCols = new ArrayList<>();
+    private final List<Point> galaxies = new ArrayList<>();
+    private final List<Point> space = new ArrayList<>();
+    private final List<Integer> emptyRows = new ArrayList<>();
+    private final List<Integer> emptyCols = new ArrayList<>();
 
     public Day11(List<String> input) {
         processData(input);
@@ -21,9 +21,9 @@ public class Day11 implements Day {
             var cols = input.get(row).split("");
             for (var col = 0; col < cols.length; col++) {
                 if (cols[col].equals(".")) {
-                    space.add(new RowCol(row, col));
+                    space.add(new Point(row, col));
                 } else {
-                    galaxies.add(new RowCol(row, col));
+                    galaxies.add(new Point(row, col));
                 }
             }
         }
@@ -58,8 +58,8 @@ public class Day11 implements Day {
         var pairs = getPairs();
         var totalOfSteps = 0L;
         for (var pair : pairs) {
-            var pair1 = new RowCol(pair.get(0).getRow(), pair.get(0).getCol());
-            var pair2 = new RowCol(pair.get(1).getRow(), pair.get(1).getCol());
+            var pair1 = new Point(pair.get(0).getRow(), pair.get(0).getCol());
+            var pair2 = new Point(pair.get(1).getRow(), pair.get(1).getCol());
             adjustRowsByUniversalRate(pair1, pair.get(0), universeRate);
             adjustRowsByUniversalRate(pair2, pair.get(1), universeRate);
             adjustColsByUniversalRate(pair1, pair.get(0), universeRate);
@@ -69,8 +69,8 @@ public class Day11 implements Day {
         return totalOfSteps;
     }
 
-    private List<List<RowCol>> getPairs() {
-        var pairs = new ArrayList<List<RowCol>>();
+    private List<List<Point>> getPairs() {
+        var pairs = new ArrayList<List<Point>>();
         for (var i = 0; i < galaxies.size(); i++) {
             for (var j = i + 1; j < galaxies.size(); j++) {
                 pairs.add(List.of(galaxies.get(i), galaxies.get(j)));
@@ -79,7 +79,7 @@ public class Day11 implements Day {
         return pairs;
     }
 
-    private void adjustRowsByUniversalRate(RowCol newPoint, RowCol oldPoint, int universeRate) {
+    private void adjustRowsByUniversalRate(Point newPoint, Point oldPoint, int universeRate) {
         for (var row : emptyRows) {
             if (oldPoint.getRow() >= row) {
                 newPoint.setRow(newPoint.getRow() + universeRate);
@@ -87,7 +87,7 @@ public class Day11 implements Day {
         }
     }
 
-    private void adjustColsByUniversalRate(RowCol newPoint, RowCol oldPoint, int universeRate) {
+    private void adjustColsByUniversalRate(Point newPoint, Point oldPoint, int universeRate) {
         for (var col : emptyCols) {
             if (oldPoint.getCol() >= col) {
                 newPoint.setCol(newPoint.getCol() + universeRate);

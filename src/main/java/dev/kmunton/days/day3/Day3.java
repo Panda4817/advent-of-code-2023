@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Day3 implements Day {
 
-    List<List<String>> data = new ArrayList<>();
+    private final List<List<String>> data = new ArrayList<>();
 
     public Day3(List<String> input) {
         processData(input);
