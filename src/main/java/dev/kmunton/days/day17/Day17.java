@@ -17,7 +17,7 @@ import java.util.PriorityQueue;
 
 public class Day17 implements Day {
 
-    private final List<List<Block>> grid = new ArrayList<>();
+    private final List<List<Long>> heatGrid = new ArrayList<>();
     private int maxRow;
     private int maxCol;
 
@@ -29,13 +29,13 @@ public class Day17 implements Day {
         maxRow = input.size();
         maxCol = input.get(0).length();
         for (int row = 0; row < maxRow; row++) {
-            var rowList = new ArrayList<Block>();
+            var rowList = new ArrayList<Long>();
             var rowArray = input.get(row).split("");
             for (int col = 0; col < maxCol; col++) {
                 long heat = Long.parseLong(rowArray[col]);
-                rowList.add(new Block(row, col, heat));
+                rowList.add(heat);
             }
-            grid.add(rowList);
+            heatGrid.add(rowList);
         }
     }
 
@@ -95,10 +95,11 @@ public class Day17 implements Day {
         var point = crucible.getAdjacentPoint(direction);
         if (point.isOnGrid(maxRow, maxCol) && crucible.getStraightSteps() >= minStraightSteps) {
             var heat = crucible.getTotalHeatLoss() + getHeatLoss(point);
-            var key = getKey(point, direction, 0);
+            var newCrucible = new Crucible(point.getRow(), point.getCol(), direction, heat, 1);
+            var key = newCrucible.getKey();
             if (notVisited(visited, key, heat)) {
                 visited.put(key, heat);
-                queue.add(new Crucible(point.getRow(), point.getCol(), direction, heat, 1));
+                queue.add(newCrucible);
             }
         }
     }
@@ -109,10 +110,11 @@ public class Day17 implements Day {
         if (point.isOnGrid(maxRow, maxCol) && crucible.getStraightSteps() < maxStraightSteps) {
             var heat = crucible.getTotalHeatLoss() + getHeatLoss(point);
             var newSteps = crucible.getStraightSteps() + 1;
-            var key = getKey(point, direction, newSteps);
+            var newCrucible = new Crucible(point.getRow(), point.getCol(), direction, heat, newSteps);
+            var key = newCrucible.getKey();
             if (notVisited(visited, key, heat)) {
                 visited.put(key, heat);
-                queue.add(new Crucible(point.getRow(), point.getCol(), direction, heat, newSteps));
+                queue.add(newCrucible);
             }
         }
     }
@@ -122,7 +124,7 @@ public class Day17 implements Day {
     }
 
     private long getHeatLoss(Point point) {
-        return grid.get(point.getRow()).get(point.getCol()).getHeatLoss();
+        return heatGrid.get(point.getRow()).get(point.getCol());
     }
 
     private boolean notVisited(Map<String, Long> visited, String key, long heatLoss) {
@@ -130,9 +132,5 @@ public class Day17 implements Day {
             return true;
         }
         return visited.get(key) > heatLoss;
-    }
-
-    private String getKey(Point point, Direction direction, int straightSteps) {
-        return point.getRow() + "_" + point.getCol() + "_" + direction + "_" + straightSteps;
     }
 }
