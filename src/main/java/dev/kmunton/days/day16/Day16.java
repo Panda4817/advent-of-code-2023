@@ -1,5 +1,10 @@
 package dev.kmunton.days.day16;
 
+import static dev.kmunton.utils.Direction.DOWN;
+import static dev.kmunton.utils.Direction.LEFT;
+import static dev.kmunton.utils.Direction.RIGHT;
+import static dev.kmunton.utils.Direction.UP;
+
 import dev.kmunton.days.Day;
 import dev.kmunton.utils.Point;
 import java.util.ArrayList;
@@ -10,11 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Day16 implements Day {
-
-    private final List<Point> vSplitters = new ArrayList<>();
-    private final List<Point> hSplitters = new ArrayList<>();
-    private final List<Point> bMirrors = new ArrayList<>();
-    private final List<Point> fMirrors = new ArrayList<>();
+    private final List<List<Integer>> grid = new ArrayList<>();
     private int maxRow;
     private int maxCol;
 
@@ -27,31 +28,28 @@ public class Day16 implements Day {
         maxCol = input.get(0).length();
         for (var i = 0; i < input.size(); i++) {
             var row = input.get(i);
+            var rowList = new ArrayList<Integer>();
             for (var j = 0; j < row.length(); j++) {
                 var c = row.charAt(j);
                 if (c == '|') {
-                    vSplitters.add(new Point(i, j));
+                    rowList.add(1);
                 } else if (c == '-') {
-                    hSplitters.add(new Point(i, j));
+                    rowList.add(2);
                 } else if (c == '\\') {
-                    bMirrors.add(new Point(i, j));
+                    rowList.add(3);
                 } else if (c == '/') {
-                    fMirrors.add(new Point(i, j));
+                    rowList.add(4);
+                } else {
+                    rowList.add(0);
                 }
             }
+            grid.add(rowList);
         }
     }
 
     public long part1() {
-        return getTotalEnergisedTiles(new Beam(0, 0, "RIGHT"));
+        return getTotalEnergisedTiles(new Beam(0, 0, RIGHT));
 
-    }
-
-    private boolean isOnGrid(Point next) {
-        if (next.getRow() >= 0 && next.getRow() < maxRow && next.getCol() >= 0 && next.getCol() < maxCol) {
-            return true;
-        }
-        return false;
     }
 
     public long part2() {
@@ -63,27 +61,27 @@ public class Day16 implements Day {
                 }
 
                 if (i == 0) {
-                    var total = getTotalEnergisedTiles(new Beam(i, j, "DOWN"));
+                    var total = getTotalEnergisedTiles(new Beam(i, j, DOWN));
                     if (total > max) {
                         max = total;
                     }
                 }
                 if (i == maxRow - 1) {
-                    var total = getTotalEnergisedTiles(new Beam(i, j, "UP"));
+                    var total = getTotalEnergisedTiles(new Beam(i, j, UP));
                     if (total > max) {
                         max = total;
                     }
                 }
 
                 if (j == 0) {
-                    var total = getTotalEnergisedTiles(new Beam(i, j, "RIGHT"));
+                    var total = getTotalEnergisedTiles(new Beam(i, j, RIGHT));
                     if (total > max) {
                         max = total;
                     }
                 }
 
                 if (j == maxCol - 1) {
-                    var total = getTotalEnergisedTiles(new Beam(i, j, "LEFT"));
+                    var total = getTotalEnergisedTiles(new Beam(i, j, LEFT));
                     if (total > max) {
                         max = total;
                     }
@@ -106,45 +104,46 @@ public class Day16 implements Day {
             }
             visitedMap.put(beam.getKey(), true);
             var split = false;
+            var type = grid.get(beam.getRow()).get(beam.getCol());
             switch (beam.getDirection()) {
-                case "RIGHT":
-                    if (vSplitters.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
+                case RIGHT:
+                    if (type == 1) {
                         splitBeamsVertical(beams, beam);
                         split = true;
-                    } else if (bMirrors.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
-                        beam.setDirection("DOWN");
-                    } else if (fMirrors.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
-                        beam.setDirection("UP");
+                    } else if (type == 3) {
+                        beam.setDirection(DOWN);
+                    } else if (type == 4) {
+                        beam.setDirection(UP);
                     }
                     break;
-                case "LEFT":
-                    if (vSplitters.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
+                case LEFT:
+                    if (type == 1) {
                         splitBeamsVertical(beams, beam);
                         split = true;
-                    } else if (bMirrors.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
-                        beam.setDirection("UP");
-                    } else if (fMirrors.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
-                        beam.setDirection("DOWN");
+                    } else if (type == 3) {
+                        beam.setDirection(UP);
+                    } else if (type == 4) {
+                        beam.setDirection(DOWN);
                     }
                     break;
-                case "UP":
-                    if (hSplitters.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
+                case UP:
+                    if (type == 2) {
                         splitBeamsHorizontal(beams, beam);
                         split = true;
-                    } else if (bMirrors.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
-                        beam.setDirection("LEFT");
-                    } else if (fMirrors.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
-                        beam.setDirection("RIGHT");
+                    } else if (type == 3) {
+                        beam.setDirection(LEFT);
+                    } else if (type == 4) {
+                        beam.setDirection(RIGHT);
                     }
                     break;
-                case "DOWN":
-                    if (hSplitters.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
+                case DOWN:
+                    if (type == 2) {
                         splitBeamsHorizontal(beams, beam);
                         split = true;
-                    } else if (bMirrors.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
-                        beam.setDirection("RIGHT");
-                    } else if (fMirrors.stream().anyMatch(v -> v.getRow() == beam.getRow() && v.getCol() == beam.getCol())) {
-                        beam.setDirection("LEFT");
+                    } else if (type == 3) {
+                        beam.setDirection(RIGHT);
+                    } else if (type == 4) {
+                        beam.setDirection(LEFT);
                     }
                     break;
             }
@@ -152,7 +151,7 @@ public class Day16 implements Day {
                 continue;
             }
             var next = beam.getAdjacentPoint(beam.getDirection());
-            if (isOnGrid(next)) {
+            if (next.isOnGrid(maxRow, maxCol)) {
                 beams.add(new Beam(next.getRow(), next.getCol(), beam.getDirection()));
             }
 
@@ -167,24 +166,24 @@ public class Day16 implements Day {
     }
 
     private void splitBeamsHorizontal(List<Beam> beams, Beam beam) {
-        var nextRight = beam.getAdjacentPoint("RIGHT");
-        if (isOnGrid(nextRight)) {
-            beams.add(new Beam(nextRight.getRow(), nextRight.getCol(), "RIGHT"));
+        var nextRight = beam.getAdjacentPoint(RIGHT);
+        if (nextRight.isOnGrid(maxRow, maxCol)) {
+            beams.add(new Beam(nextRight.getRow(), nextRight.getCol(), RIGHT));
         }
-        var nextLeft = beam.getAdjacentPoint("LEFT");
-        if (isOnGrid(nextLeft)) {
-            beams.add(new Beam(nextLeft.getRow(), nextLeft.getCol(), "LEFT"));
+        var nextLeft = beam.getAdjacentPoint(LEFT);
+        if (nextLeft.isOnGrid(maxRow, maxCol)) {
+            beams.add(new Beam(nextLeft.getRow(), nextLeft.getCol(), LEFT));
         }
     }
 
     private void splitBeamsVertical(List<Beam> beams, Beam beam) {
-        var nextUp = beam.getAdjacentPoint("UP");
-        if (isOnGrid(nextUp)) {
-            beams.add(new Beam(nextUp.getRow(), nextUp.getCol(), "UP"));
+        var nextUp = beam.getAdjacentPoint(UP);
+        if (nextUp.isOnGrid(maxRow, maxCol)) {
+            beams.add(new Beam(nextUp.getRow(), nextUp.getCol(), UP));
         }
-        var nextDown = beam.getAdjacentPoint("DOWN");
-        if (isOnGrid(nextDown)) {
-            beams.add(new Beam(nextDown.getRow(), nextDown.getCol(), "DOWN"));
+        var nextDown = beam.getAdjacentPoint(DOWN);
+        if (nextDown.isOnGrid(maxRow, maxCol)) {
+            beams.add(new Beam(nextDown.getRow(), nextDown.getCol(), DOWN));
         }
     }
 }

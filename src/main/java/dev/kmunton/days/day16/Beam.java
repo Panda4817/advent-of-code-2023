@@ -1,21 +1,22 @@
 package dev.kmunton.days.day16;
 
+import dev.kmunton.utils.Direction;
 import dev.kmunton.utils.Point;
 import java.util.Objects;
 
 public class Beam extends Point {
 
-    private String direction;
-    public Beam(int row, int col, String direction) {
+    private Direction direction;
+    public Beam(int row, int col, Direction direction) {
         super(row, col);
         this.direction = direction;
     }
 
-    public void setDirection(String direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
-    public String getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 

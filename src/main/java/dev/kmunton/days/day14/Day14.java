@@ -1,5 +1,10 @@
 package dev.kmunton.days.day14;
 
+import static dev.kmunton.utils.Direction.DOWN;
+import static dev.kmunton.utils.Direction.LEFT;
+import static dev.kmunton.utils.Direction.RIGHT;
+import static dev.kmunton.utils.Direction.UP;
+
 import dev.kmunton.days.Day;
 import dev.kmunton.utils.Point;
 import java.util.HashMap;
@@ -82,7 +87,7 @@ public class Day14 implements Day {
                 }
                 rocks.remove(rock);
                 while (rock.canMoveUp(walls, rocks)) {
-                    rock.move("UP");
+                    rock.move(UP);
                 }
                 rocks.add(rock);
             }
@@ -101,7 +106,7 @@ public class Day14 implements Day {
                 }
                 rocks.remove(rock);
                 while (rock.canMoveLeft(walls, rocks)) {
-                    rock.move("LEFT");
+                    rock.move(LEFT);
                 }
                 rocks.add(rock);
             }
@@ -120,7 +125,7 @@ public class Day14 implements Day {
                 }
                 rocks.remove(rock);
                 while (rock.canMoveDown(maxRows, walls, rocks)) {
-                    rock.move("DOWN");
+                    rock.move(DOWN);
                 }
                 rocks.add(rock);
             }
@@ -139,7 +144,7 @@ public class Day14 implements Day {
                 }
                 rocks.remove(rock);
                 while (rock.canMoveRight(maxCols, walls, rocks)) {
-                    rock.move("RIGHT");
+                    rock.move(RIGHT);
                 }
                 rocks.add(rock);
             }
