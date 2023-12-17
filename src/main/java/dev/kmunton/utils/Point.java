@@ -52,7 +52,7 @@ public class Point {
         return "[" + row + ", " + col + "]";
     }
 
-    public List<Point> getAdjacentPoints() {
+    public List<Point> getAllEightAdjacentPoints() {
         return List.of(
             new Point(row - 1, col),
             new Point(row + 1, col),
@@ -65,17 +65,16 @@ public class Point {
         );
     }
 
-    public Point getAdjacentPoint(String direction) {
+    public Point getAdjacentPoint(Direction direction) {
         return switch (direction) {
-            case "UP" -> new Point(row - 1, col);
-            case "DOWN" -> new Point(row + 1, col);
-            case "LEFT" -> new Point(row, col - 1);
-            case "RIGHT" -> new Point(row, col + 1);
-            case "UP_LEFT" -> new Point(row - 1, col - 1);
-            case "UP_RIGHT" -> new Point(row - 1, col + 1);
-            case "DOWN_LEFT" -> new Point(row + 1, col - 1);
-            case "DOWN_RIGHT" -> new Point(row + 1, col + 1);
-            default -> throw new IllegalStateException("Unexpected value: " + direction);
+            case UP -> new Point(row - 1, col);
+            case DOWN -> new Point(row + 1, col);
+            case LEFT -> new Point(row, col - 1);
+            case RIGHT -> new Point(row, col + 1);
+            case UP_LEFT -> new Point(row - 1, col - 1);
+            case UP_RIGHT -> new Point(row - 1, col + 1);
+            case DOWN_LEFT -> new Point(row + 1, col - 1);
+            case DOWN_RIGHT -> new Point(row + 1, col + 1);
         };
     }
 
@@ -83,25 +82,25 @@ public class Point {
         return (long) Math.abs(this.row - other.getRow()) + Math.abs(this.col - other.getCol());
     }
 
-    public void move(String direction) {
+    public void move(Direction direction) {
         switch (direction) {
-            case "UP" -> this.row--;
-            case "DOWN" -> this.row++;
-            case "LEFT" -> this.col--;
-            case "RIGHT" -> this.col++;
-            case "UP_LEFT" -> {
+            case UP -> this.row--;
+            case DOWN -> this.row++;
+            case LEFT -> this.col--;
+            case RIGHT -> this.col++;
+            case UP_LEFT -> {
                 this.row--;
                 this.col--;
             }
-            case "UP_RIGHT" -> {
+            case UP_RIGHT -> {
                 this.row--;
                 this.col++;
             }
-            case "DOWN_LEFT" -> {
+            case DOWN_LEFT -> {
                 this.row++;
                 this.col--;
             }
-            case "DOWN_RIGHT" -> {
+            case DOWN_RIGHT -> {
                 this.row++;
                 this.col++;
             }
@@ -159,5 +158,9 @@ public class Point {
             }
         }
         return true;
+    }
+
+    public boolean isOnGrid(int maxRows, int maxCols) {
+        return this.getRow() >= 0 && this.getRow() < maxRows && this.getCol() >= 0 && this.getCol() < maxCols;
     }
 }
