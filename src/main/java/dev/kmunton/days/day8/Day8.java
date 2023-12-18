@@ -1,6 +1,7 @@
 package dev.kmunton.days.day8;
 
 import dev.kmunton.days.Day;
+import dev.kmunton.utils.CustomMaths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class Day8 implements Day {
             stepsForEachOne.put(current, steps);
         }
 
-        return stepsForEachOne.values().stream().reduce(1L, this::lcm);
+        return stepsForEachOne.values().stream().reduce(1L, CustomMaths::lcm);
     }
 
     private long getStepsFromAToZ(String a, Predicate<String> expression) {
@@ -65,17 +66,5 @@ public class Day8 implements Day {
             steps += 1;
         }
         return steps;
-    }
-
-    private long gcf(long a, long b) {
-        if (b == 0) {
-            return a;
-        } else {
-            return (gcf(b, a % b));
-        }
-    }
-
-    private long lcm(long a, long b) {
-        return (a * b) / gcf(a, b);
     }
 }
