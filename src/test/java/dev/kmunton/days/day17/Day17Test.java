@@ -49,7 +49,7 @@ class Day17Test {
         999999999991
         999999999991
         """.lines().toList();
-        day =  new Day17(input);
+        var day = new Day17(input);
         assertEquals( 71, day.part2());
     }
 }
