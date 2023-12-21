@@ -163,4 +163,8 @@ public class Point {
     public boolean isOnGrid(int maxRows, int maxCols) {
         return this.getRow() >= 0 && this.getRow() < maxRows && this.getCol() >= 0 && this.getCol() < maxCols;
     }
+
+    public boolean atEdge(int maxRows, int maxCols) {
+        return this.getRow() == 0 || this.getRow() == maxRows - 1 || this.getCol() == 0 || this.getCol() == maxCols - 1;
+    }
 }
