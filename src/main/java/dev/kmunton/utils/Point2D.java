@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class Point {
+public class Point2D {
 
     private int row;
     private int col;
 
-    public Point(int row, int col) {
+    public Point2D(int row, int col) {
         this.row = row;
         this.col = col;
     }
@@ -38,7 +38,7 @@ public class Point {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Point point = (Point) o;
+        Point2D point = (Point2D) o;
         return row == point.row && col == point.col;
     }
 
@@ -52,33 +52,33 @@ public class Point {
         return "[" + row + ", " + col + "]";
     }
 
-    public List<Point> getAllEightAdjacentPoints() {
+    public List<Point2D> getAllEightAdjacentPoints() {
         return List.of(
-            new Point(row - 1, col),
-            new Point(row + 1, col),
-            new Point(row, col - 1),
-            new Point(row, col + 1),
-            new Point(row - 1, col - 1),
-            new Point(row - 1, col + 1),
-            new Point(row + 1, col - 1),
-            new Point(row + 1, col + 1)
+            new Point2D(row - 1, col),
+            new Point2D(row + 1, col),
+            new Point2D(row, col - 1),
+            new Point2D(row, col + 1),
+            new Point2D(row - 1, col - 1),
+            new Point2D(row - 1, col + 1),
+            new Point2D(row + 1, col - 1),
+            new Point2D(row + 1, col + 1)
         );
     }
 
-    public Point getAdjacentPoint(Direction direction) {
+    public Point2D getAdjacentPoint(Direction direction) {
         return switch (direction) {
-            case UP -> new Point(row - 1, col);
-            case DOWN -> new Point(row + 1, col);
-            case LEFT -> new Point(row, col - 1);
-            case RIGHT -> new Point(row, col + 1);
-            case UP_LEFT -> new Point(row - 1, col - 1);
-            case UP_RIGHT -> new Point(row - 1, col + 1);
-            case DOWN_LEFT -> new Point(row + 1, col - 1);
-            case DOWN_RIGHT -> new Point(row + 1, col + 1);
+            case UP -> new Point2D(row - 1, col);
+            case DOWN -> new Point2D(row + 1, col);
+            case LEFT -> new Point2D(row, col - 1);
+            case RIGHT -> new Point2D(row, col + 1);
+            case UP_LEFT -> new Point2D(row - 1, col - 1);
+            case UP_RIGHT -> new Point2D(row - 1, col + 1);
+            case DOWN_LEFT -> new Point2D(row + 1, col - 1);
+            case DOWN_RIGHT -> new Point2D(row + 1, col + 1);
         };
     }
 
-    public long calculateManhattanDistance(Point other) {
+    public long calculateManhattanDistance(Point2D other) {
         return (long) Math.abs(this.row - other.getRow()) + Math.abs(this.col - other.getCol());
     }
 
@@ -109,12 +109,12 @@ public class Point {
     }
 
     @SafeVarargs
-    public final boolean canMoveUp(Set<Point>... blockers) {
+    public final boolean canMoveUp(Set<Point2D>... blockers) {
         if (this.getRow() == 0) {
             return false;
         }
         for (var blocker : blockers) {
-            if (blocker.contains(new Point(this.getRow() - 1, this.getCol()))) {
+            if (blocker.contains(new Point2D(this.getRow() - 1, this.getCol()))) {
                 return false;
             }
         }
@@ -122,12 +122,12 @@ public class Point {
     }
 
     @SafeVarargs
-    public final boolean canMoveDown(int maxRows, Set<Point>... blockers) {
+    public final boolean canMoveDown(int maxRows, Set<Point2D>... blockers) {
         if (this.getRow() == maxRows - 1) {
             return false;
         }
         for (var blocker : blockers) {
-            if (blocker.contains(new Point(this.getRow() + 1, this.getCol()))) {
+            if (blocker.contains(new Point2D(this.getRow() + 1, this.getCol()))) {
                 return false;
             }
         }
@@ -135,12 +135,12 @@ public class Point {
     }
 
     @SafeVarargs
-    public final boolean canMoveLeft(Set<Point>... blockers) {
+    public final boolean canMoveLeft(Set<Point2D>... blockers) {
         if (this.getCol() == 0) {
             return false;
         }
         for (var blocker : blockers) {
-            if (blocker.contains(new Point(this.getRow(), this.getCol() - 1))) {
+            if (blocker.contains(new Point2D(this.getRow(), this.getCol() - 1))) {
                 return false;
             }
         }
@@ -148,12 +148,12 @@ public class Point {
     }
 
     @SafeVarargs
-    public final boolean canMoveRight(int maxCols, Set<Point>... blockers) {
+    public final boolean canMoveRight(int maxCols, Set<Point2D>... blockers) {
         if (this.getCol() == maxCols - 1) {
             return false;
         }
         for (var blocker : blockers) {
-            if (blocker.contains(new Point(this.getRow(), this.getCol() + 1))) {
+            if (blocker.contains(new Point2D(this.getRow(), this.getCol() + 1))) {
                 return false;
             }
         }

@@ -6,7 +6,7 @@ import static dev.kmunton.utils.Direction.RIGHT;
 import static dev.kmunton.utils.Direction.UP;
 
 import dev.kmunton.days.Day;
-import dev.kmunton.utils.Point;
+import dev.kmunton.utils.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -157,10 +157,10 @@ public class Day16 implements Day {
 
         }
 
-        Set<Point> visitedPoints = new HashSet<>();
+        Set<Point2D> visitedPoints = new HashSet<>();
         for (var entry : visitedMap.entrySet()) {
             var parts = entry.getKey().split("_");
-            visitedPoints.add(new Point(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+            visitedPoints.add(new Point2D(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
         }
         return visitedPoints.size();
     }

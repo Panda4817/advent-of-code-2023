@@ -7,7 +7,7 @@ import static dev.kmunton.utils.Direction.UP;
 
 import dev.kmunton.days.Day;
 import dev.kmunton.utils.Direction;
-import dev.kmunton.utils.Point;
+import dev.kmunton.utils.Point2D;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -49,8 +49,8 @@ public class Day17 implements Day {
 
     private long solve(int maxStraightSteps, int minStraightSteps) {
         var queue = new PriorityQueue<>(Comparator.comparing(Crucible::getTotalHeatLoss));
-        var start1 = new Crucible(1, 0, DOWN, getHeatLoss(new Point(1, 0)), 1);
-        var start2 = new Crucible(0, 1, RIGHT, getHeatLoss(new Point(0, 1)), 1);
+        var start1 = new Crucible(1, 0, DOWN, getHeatLoss(new Point2D(1, 0)), 1);
+        var start2 = new Crucible(0, 1, RIGHT, getHeatLoss(new Point2D(0, 1)), 1);
         queue.add(start1);
         queue.add(start2);
         var visited = new HashMap<String, Long>();
@@ -123,7 +123,7 @@ public class Day17 implements Day {
         return crucible.getRow() == maxRow - 1 && crucible.getCol() == maxCol - 1;
     }
 
-    private long getHeatLoss(Point point) {
+    private long getHeatLoss(Point2D point) {
         return heatGrid.get(point.getRow()).get(point.getCol());
     }
 

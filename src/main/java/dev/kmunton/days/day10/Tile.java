@@ -1,51 +1,51 @@
 package dev.kmunton.days.day10;
 
-import dev.kmunton.utils.Point;
+import dev.kmunton.utils.Point2D;
 import java.util.List;
 
 public class Tile {
 
     private final String type;
-    private final Point point;
-    private final List<Point> possibleNeighbours;
+    private final Point2D point;
+    private final List<Point2D> possibleNeighbours;
 
-    public Tile(String type, Point point) {
+    public Tile(String type, Point2D point) {
         this.type = type;
         this.point = point;
         this.possibleNeighbours = setPossibleNeighbours(point);
     }
 
-    private List<Point> setPossibleNeighbours(Point point) {
+    private List<Point2D> setPossibleNeighbours(Point2D point) {
         return switch (type) {
             case "S" -> List.of(
-                new Point(point.getRow() - 1, point.getCol()),
-                new Point(point.getRow() + 1, point.getCol()),
-                new Point(point.getRow(), point.getCol() - 1),
-                new Point(point.getRow(), point.getCol() + 1)
+                new Point2D(point.getRow() - 1, point.getCol()),
+                new Point2D(point.getRow() + 1, point.getCol()),
+                new Point2D(point.getRow(), point.getCol() - 1),
+                new Point2D(point.getRow(), point.getCol() + 1)
             );
             case "|" -> List.of(
-                new Point(point.getRow() - 1, point.getCol()),
-                new Point(point.getRow() + 1, point.getCol())
+                new Point2D(point.getRow() - 1, point.getCol()),
+                new Point2D(point.getRow() + 1, point.getCol())
             );
             case "-" -> List.of(
-                new Point(point.getRow(), point.getCol() - 1),
-                new Point(point.getRow(), point.getCol() + 1)
+                new Point2D(point.getRow(), point.getCol() - 1),
+                new Point2D(point.getRow(), point.getCol() + 1)
             );
             case "F" -> List.of(
-                new Point(point.getRow() + 1, point.getCol()),
-                new Point(point.getRow(), point.getCol() + 1)
+                new Point2D(point.getRow() + 1, point.getCol()),
+                new Point2D(point.getRow(), point.getCol() + 1)
             );
             case "L" -> List.of(
-                new Point(point.getRow() - 1, point.getCol()),
-                new Point(point.getRow(), point.getCol() + 1)
+                new Point2D(point.getRow() - 1, point.getCol()),
+                new Point2D(point.getRow(), point.getCol() + 1)
             );
             case "J" -> List.of(
-                new Point(point.getRow() - 1, point.getCol()),
-                new Point(point.getRow(), point.getCol() - 1)
+                new Point2D(point.getRow() - 1, point.getCol()),
+                new Point2D(point.getRow(), point.getCol() - 1)
             );
             case "7" -> List.of(
-                new Point(point.getRow() + 1, point.getCol()),
-                new Point(point.getRow(), point.getCol() - 1)
+                new Point2D(point.getRow() + 1, point.getCol()),
+                new Point2D(point.getRow(), point.getCol() - 1)
             );
             default -> List.of();
         };
@@ -55,11 +55,11 @@ public class Tile {
         return type;
     }
 
-    public List<Point> getPossibleNeighbours() {
+    public List<Point2D> getPossibleNeighbours() {
         return possibleNeighbours;
     }
 
-    public boolean isMainLoop(List<Point> mainLoopPoints) {
+    public boolean isMainLoop(List<Point2D> mainLoopPoints) {
         return mainLoopPoints.contains(point);
     }
 
@@ -72,7 +72,7 @@ public class Tile {
             '}';
     }
 
-    public Point getRowCol() {
+    public Point2D getRowCol() {
         return point;
     }
 }
