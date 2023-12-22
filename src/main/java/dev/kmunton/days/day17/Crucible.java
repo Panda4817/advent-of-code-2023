@@ -1,9 +1,9 @@
 package dev.kmunton.days.day17;
 
 import dev.kmunton.utils.Direction;
-import dev.kmunton.utils.Point;
+import dev.kmunton.utils.Point2D;
 
-public class Crucible extends Point {
+public class Crucible extends Point2D {
 
     private final Direction direction;
     private final long totalHeatLoss;

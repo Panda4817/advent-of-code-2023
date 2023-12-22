@@ -1,10 +1,10 @@
 package dev.kmunton.days.day16;
 
 import dev.kmunton.utils.Direction;
-import dev.kmunton.utils.Point;
+import dev.kmunton.utils.Point2D;
 import java.util.Objects;
 
-public class Beam extends Point {
+public class Beam extends Point2D {
 
     private Direction direction;
     public Beam(int row, int col, Direction direction) {

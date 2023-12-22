@@ -6,7 +6,7 @@ import static dev.kmunton.utils.Direction.RIGHT;
 import static dev.kmunton.utils.Direction.UP;
 
 import dev.kmunton.days.Day;
-import dev.kmunton.utils.Point;
+import dev.kmunton.utils.Point2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,11 +16,11 @@ import java.util.Set;
 public class Day21 implements Day {
 
     private int[][] gardenMap;
-    private Point start;
-    private final Set<Point> rocks = new HashSet<>();
+    private Point2D start;
+    private final Set<Point2D> rocks = new HashSet<>();
 
-    private record State(Point position, int steps) {}
-    private record StateInfiniteGarden(Point positionOnGrid, Point positionOffMap, int steps) {}
+    private record State(Point2D position, int steps) {}
+    private record StateInfiniteGarden(Point2D positionOnGrid, Point2D positionOffMap, int steps) {}
 
     public Day21(List<String> input) {
         processData(input);
@@ -32,10 +32,10 @@ public class Day21 implements Day {
             for (var c = 0; c < input.get(r).length(); c++) {
                 gardenMap[r][c] = input.get(r).charAt(c) == '#' ? -1 : 0;
                 if (input.get(r).charAt(c) == 'S') {
-                    start = new Point(r, c);
+                    start = new Point2D(r, c);
                 }
                 if (input.get(r).charAt(c) == '#') {
-                    rocks.add(new Point(r, c));
+                    rocks.add(new Point2D(r, c));
                 }
 
             }
@@ -75,7 +75,7 @@ public class Day21 implements Day {
                 continue;
             }
             var currentPoint = current.position();
-            var nextPoints = new ArrayList<Point>();
+            var nextPoints = new ArrayList<Point2D>();
             if (currentPoint.canMoveUp(rocks)) {
                 nextPoints.add(currentPoint.getAdjacentPoint(UP));
             }
@@ -144,7 +144,7 @@ public class Day21 implements Day {
                 else {
                     adjustedCol = next.positionOnGrid.getCol();
                 }
-                var nextOnGrid = new Point(adjustedRow, adjustedCol);
+                var nextOnGrid = new Point2D(adjustedRow, adjustedCol);
                 if (rocks.contains(nextOnGrid)) {
                     continue;
                 }

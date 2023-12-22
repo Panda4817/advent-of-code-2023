@@ -1,7 +1,7 @@
 package dev.kmunton.days.day10;
 
 import dev.kmunton.days.Day;
-import dev.kmunton.utils.Point;
+import dev.kmunton.utils.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Day10 implements Day {
 
     private final List<List<Tile>> grid = new ArrayList<>();
-    private Point start;
+    private Point2D start;
 
     public Day10(List<String> input) {
         processData(input);
@@ -20,9 +20,9 @@ public class Day10 implements Day {
             var row = input.get(r).split("");
             var rowList = new ArrayList<Tile>();
             for (var c = 0; c < row.length; c++) {
-                var tile = new Tile(row[c], new Point(r, c));
+                var tile = new Tile(row[c], new Point2D(r, c));
                 if (Objects.equals(tile.getType(), "S")) {
-                    start = new Point(r, c);
+                    start = new Point2D(r, c);
                 }
                 rowList.add(tile);
             }
@@ -74,11 +74,11 @@ public class Day10 implements Day {
         return enclosedTotal;
     }
 
-    private List<Point> getMainLoopRowCols() {
-        List<Point> queue = new ArrayList<>();
+    private List<Point2D> getMainLoopRowCols() {
+        List<Point2D> queue = new ArrayList<>();
         queue.add(start);
-        var visited = new ArrayList<Point>();
-        var mainLoopRowCols = new ArrayList<Point>();
+        var visited = new ArrayList<Point2D>();
+        var mainLoopRowCols = new ArrayList<Point2D>();
         while (!queue.isEmpty()) {
             var current = queue.remove(0);
             visited.add(current);
@@ -112,7 +112,7 @@ public class Day10 implements Day {
         return mainLoopRowCols;
     }
 
-    private void printGrid(List<Point> mainLoopPoints, boolean onlyMainLoop, List<Point> enclosedPoints) {
+    private void printGrid(List<Point2D> mainLoopPoints, boolean onlyMainLoop, List<Point2D> enclosedPoints) {
         for (var row : grid) {
             for (var tile : row) {
                 if (onlyMainLoop) {

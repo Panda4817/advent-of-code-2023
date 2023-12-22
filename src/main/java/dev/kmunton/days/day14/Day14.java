@@ -6,7 +6,7 @@ import static dev.kmunton.utils.Direction.RIGHT;
 import static dev.kmunton.utils.Direction.UP;
 
 import dev.kmunton.days.Day;
-import dev.kmunton.utils.Point;
+import dev.kmunton.utils.Point2D;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,9 +15,9 @@ import java.util.Set;
 
 public class Day14 implements Day {
 
-    private Set<Point> rocks = new HashSet<>();
-    private final Set<Point> walls = new HashSet<>();
-    private record State(long cycle, HashSet<Point> rocks) {}
+    private Set<Point2D> rocks = new HashSet<>();
+    private final Set<Point2D> walls = new HashSet<>();
+    private record State(long cycle, HashSet<Point2D> rocks) {}
     private final Map<Integer, Integer> rowToLoad = new HashMap<>();
     private int maxRows = 0;
     private int maxCols = 0;
@@ -36,10 +36,10 @@ public class Day14 implements Day {
 
             for (int c = 0; c < input.get(r).length(); c++) {
                 if (input.get(r).charAt(c) == 'O') {
-                    rocks.add(new Point(r, c));
+                    rocks.add(new Point2D(r, c));
                 }
                 if (input.get(r).charAt(c) == '#') {
-                    walls.add(new Point(r, c));
+                    walls.add(new Point2D(r, c));
                 }
             }
         }
@@ -56,7 +56,7 @@ public class Day14 implements Day {
         var states = new HashMap<String, State>();
         long i = 1;
         while (i <= cycle) {
-            var key = rocks.stream().map(Point::toString).reduce("", String::concat);
+            var key = rocks.stream().map(Point2D::toString).reduce("", String::concat);
             if (states.containsKey(key)) {
                 rocks = new HashSet<>(states.get(key).rocks);
                 i += ((cycle - i) / (i - states.get(key).cycle) * (i - states.get(key).cycle)) + 1;
@@ -78,7 +78,7 @@ public class Day14 implements Day {
     private void tiltRocksUp() {
         for (var r = 0; r < maxRows; r++) {
             for (var c = 0; c < maxCols; c++) {
-                var rock = new Point(r, c);
+                var rock = new Point2D(r, c);
                 if (walls.contains(rock)) {
                     continue;
                 }
@@ -97,7 +97,7 @@ public class Day14 implements Day {
     private void tiltRocksLeft() {
         for (var c = 1; c < maxCols; c++) {
             for (var r = 0; r < maxRows; r++) {
-                var rock = new Point(r, c);
+                var rock = new Point2D(r, c);
                 if (walls.contains(rock)) {
                     continue;
                 }
@@ -116,7 +116,7 @@ public class Day14 implements Day {
     private void tiltRocksDown() {
         for (var r = maxRows-2; r >= 0; r--) {
             for (var c = 0; c < maxCols; c++) {
-                var rock = new Point(r, c);
+                var rock = new Point2D(r, c);
                 if (walls.contains(rock)) {
                     continue;
                 }
@@ -135,7 +135,7 @@ public class Day14 implements Day {
     private void tiltRocksRight() {
         for (var c = maxCols-2; c >= 0; c--) {
             for (var r = 0; r < maxRows; r++) {
-                var rock = new Point(r, c);
+                var rock = new Point2D(r, c);
                 if (walls.contains(rock)) {
                     continue;
                 }
