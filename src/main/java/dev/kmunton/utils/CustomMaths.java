@@ -1,6 +1,7 @@
 package dev.kmunton.utils;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CustomMaths {
 
@@ -37,5 +38,27 @@ public class CustomMaths {
 
         // Return absolute value
         return Math.abs(area / 2.0);
+    }
+
+
+    public static Optional<DoublePoint> calculateIntersectionPoint(
+        double m1,
+        double b1,
+        double m2,
+        double b2) {
+
+        if (m1 == m2) {
+            return Optional.empty();
+        }
+
+        double x = (b2 - b1) / (m1 - m2);
+        double y = m1 * x + b1;
+
+        DoublePoint point = new DoublePoint(x, y);
+        return Optional.of(point);
+    }
+
+    public static boolean isPositive(double number) {
+        return number > 0;
     }
 }
